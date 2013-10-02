@@ -11,32 +11,22 @@ macro define check_USART(ch,return) (((ch) == (return)) ? ans[0]:ans[1])
 
 call RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_AFIO, ENABLE)
 call RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE)
+
 macro define INIT_GPIO(pin, speed, mode) \
              ((GPIO_InitTypeDef*)$osp)->GPIO_Pin = pin, \
              ((GPIO_InitTypeDef*)$osp)->GPIO_Speed = speed, \
              ((GPIO_InitTypeDef*)$osp)->GPIO_Mode = mode, \
              GPIO_Init(GPIOA, $osp)
+
 set INIT_GPIO(GPIO_Pin_3, 0, GPIO_Mode_IN_FLOATING)
 set INIT_GPIO(GPIO_Pin_2, GPIO_Speed_50MHz, GPIO_Mode_AF_PP)
 c
-set ((USART_InitTypeDef*)$osp)->USART_BaudRate = 9600
-set ((USART_InitTypeDef*)$osp)->USART_WordLength = USART_WordLength_8b
-set ((USART_InitTypeDef*)$osp)->USART_StopBits = USART_StopBits_1
-set ((USART_InitTypeDef*)$osp)->USART_Parity = USART_Parity_No
-set ((USART_InitTypeDef*)$osp)->USART_HardwareFlowControl = USART_HardwareFlowControl_None
-set ((USART_InitTypeDef*)$osp)->USART_Mode = USART_Mode_Rx | USART_Mode_Tx
-
+call USART_StructInit($osp)
 call USART_Init(USART2, $osp)
 call USART_Cmd(USART2, ENABLE)
-call SendData('H')
-call check_USART($1,str[0])
-call SendData('e')
-call check_USART($3,str[1])
-call SendData('l')
-call check_USART($5,str[2])
-call SendData('l')
-call check_USART($7,str[3])
-call SendData('o')
-call check_USART($9,str[4])
-call SendData('!')
-call check_USART($11,str[5])
+
+while(*str2 != '\0')
+set $receive = SendData(*str2)
+call check_USART($receive,*str2)
+set str2 = str2 + 1
+end
