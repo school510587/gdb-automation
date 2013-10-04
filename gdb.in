@@ -7,10 +7,10 @@ b main.c:4
 c
 call RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_AFIO, ENABLE)
 call RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE)
-macro define FILL(field, value) ((GPIO_InitTypeDef*)$osp)->field = value
+macro define FILL(type, field, value) ((type*)$osp)->field = value
 macro define INIT_GPIO(pin, speed, mode) \
-      FILL(GPIO_Pin, pin), FILL(GPIO_Speed, speed), \
-      FILL(GPIO_Mode, mode), GPIO_Init(GPIOA, $osp)
+      FILL(GPIO_InitTypeDef, GPIO_Pin, pin), FILL(GPIO_InitTypeDef, GPIO_Speed, speed), \
+      FILL(GPIO_InitTypeDef, GPIO_Mode, mode), GPIO_Init(GPIOA, $osp)
 set INIT_GPIO(GPIO_Pin_3, 0, GPIO_Mode_IN_FLOATING)
 set INIT_GPIO(GPIO_Pin_2, GPIO_Speed_50MHz, GPIO_Mode_AF_PP)
 c
