@@ -14,12 +14,12 @@ macro define INIT_GPIO(pin, speed, mode) \
 set INIT_GPIO(GPIO_Pin_3, 0, GPIO_Mode_IN_FLOATING)
 set INIT_GPIO(GPIO_Pin_2, GPIO_Speed_50MHz, GPIO_Mode_AF_PP)
 c
-set ((USART_InitTypeDef*)$osp)->USART_BaudRate = 9600
-set ((USART_InitTypeDef*)$osp)->USART_WordLength = USART_WordLength_8b
-set ((USART_InitTypeDef*)$osp)->USART_StopBits = USART_StopBits_1
-set ((USART_InitTypeDef*)$osp)->USART_Parity = USART_Parity_No
-set ((USART_InitTypeDef*)$osp)->USART_HardwareFlowControl = USART_HardwareFlowControl_None
-set ((USART_InitTypeDef*)$osp)->USART_Mode = USART_Mode_Rx | USART_Mode_Tx
+set FILL(USART_InitTypeDef, USART_BaudRate, 9600)
+set FILL(USART_InitTypeDef, USART_WordLength, USART_WordLength_8b)
+set FILL(USART_InitTypeDef, USART_StopBits, USART_StopBits_1)
+set FILL(USART_InitTypeDef, USART_Parity, USART_Parity_No)
+set FILL(USART_InitTypeDef, USART_HardwareFlowControl, USART_HardwareFlowControl_None)
+set FILL(USART_InitTypeDef, USART_Mode, USART_Mode_Rx | USART_Mode_Tx)
 call USART_Init(USART2, $osp)
 call USART_Cmd(USART2, ENABLE)
 echo Send H
