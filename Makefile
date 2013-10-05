@@ -42,8 +42,10 @@ qemudbg: main.bin
 gdbauto: main.bin
 	$(QEMU_STM32) -nographic -M stm32-p103 \
 		-gdb tcp::3333 -S \
+		-serial stdio \
 		-kernel main.bin -monitor null &
 	$(CROSS_COMPILE)gdb -x gdb.in
+	pkill -9 $(notdir $(QEMU_STM32))
 
 emu: main.bin
 	bash emulate.sh main.bin
