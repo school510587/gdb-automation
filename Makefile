@@ -12,6 +12,7 @@ all: main.bin
 main.bin: main.c
 	$(CROSS_COMPILE)gcc \
 		-DUSE_STDPERIPH_DRIVER \
+		$(DEBUG_FLAGS) \
 		-Wl,-Tmain.ld -nostartfiles \
 		-I. -Ilibraries/CMSIS/CM3/CoreSupport \
 		-Ilibraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x \
@@ -39,7 +40,8 @@ qemudbg: main.bin
 	$(QEMU_STM32) -nographic -M stm32-p103 \
 		-gdb tcp::3333 -S \
 		-kernel main.bin
-gdbauto: main.bin
+gdbauto:
+	$(MAKE) main.bin DEBUG_FLAGS=-DDEBUG
 	$(QEMU_STM32) -nographic -M stm32-p103 \
 		-gdb tcp::3333 -S \
 		-serial stdio \
