@@ -1,4 +1,10 @@
 #include "stm32f10x.h"
+#include <stddef.h>
+void *malloc(size_t size)
+{
+	static char buffer[1024] = {0};
+	return buffer;
+}
 int main(void)
 {
 #ifdef DEBUG
